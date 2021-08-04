@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import TypeVar, Any
 
 class _SingletonWrapper:
     """
@@ -16,6 +16,9 @@ class _SingletonWrapper:
             self._instance = self.__wrapped__(*args, **kwargs)
         return self._instance
 
+    def __getattr__(self, name: str) -> Any:
+        """Allows class member access from the wrapper"""
+        return getattr(self.__wrapped__, name)
 
 # ensures a correct type hinting
 SingletonType = TypeVar("SingletonType")
